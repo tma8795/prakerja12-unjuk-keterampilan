@@ -1,5 +1,7 @@
 package main
 
-func main() {
+import "ecommerce/configs"
 
+func main() {
+	configs.InitDatabase()
 }
