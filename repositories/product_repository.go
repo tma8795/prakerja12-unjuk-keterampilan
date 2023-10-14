@@ -3,6 +3,7 @@ package repositories
 import (
 	"ecommerce/configs"
 	"ecommerce/models"
+	"fmt"
 )
 
 func AddProducts(productsDB *models.Products) error {
@@ -27,4 +28,15 @@ func GetProduct(product *models.Products) error {
 		return result.Error
 	}
 	return nil
+}
+
+func DeleteProduct(product *models.Products) error {
+	result := configs.DB.Where("id = ?", product.Id).Delete(&product)
+	if result.Error != nil {
+		return fmt.Errorf("error")
+	} else if result.RowsAffected == 0 {
+		return fmt.Errorf("record not found")
+	} else {
+		return nil
+	}
 }

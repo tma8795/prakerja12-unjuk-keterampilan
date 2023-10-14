@@ -71,4 +71,32 @@ func GetProductByIdController(c echo.Context) error {
 }
 
 // func UpdateProductsController(c echo.Context) error {}
-// func DeleteProductsController(c echo.Context) error {}
+
+func DeleteProductsController(c echo.Context) error {
+	var err error
+	var product models.Products
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, models.BaseResponse{
+			Message: err.Error(),
+			Status:  false,
+			Data:    nil,
+		})
+	}
+
+	product.Id = uint(id)
+
+	err = repositories.DeleteProduct(&product)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, models.BaseResponse{
+			Message: err.Error(),
+			Status:  false,
+			Data:    nil,
+		})
+	}
+	return c.JSON(http.StatusOK, models.BaseResponse{
+		Message: "Berhasil menghapus data",
+		Status:  true,
+		Data:    product.Id,
+	})
+}
